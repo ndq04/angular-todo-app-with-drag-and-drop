@@ -1,0 +1,66 @@
+<div class="board-wrapper">
+  <div class="board-columns" cdkDropListGroup>
+    <div class="board-column" *ngFor="let column of board.columns">
+      <div class="column-title">{{ column.name }}</div>
+      <div
+        class="tasks-container"
+        cdkDropList
+        [cdkDropListData]="column.tasks"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div class="task" *ngFor="let item of column.tasks" cdkDrag>
+          <textarea class="title" disabled>{{ item?.title }}</textarea>
+          <div class="icon-container">
+            <i class="material-icons icon-edit">edit</i>
+            <i class="material-icons icon-delete" (click)="deleteTask(item.id)"
+              >delete</i
+            >
+          </div>
+        </div>
+      </div>
+      <div class="todo-form" *ngIf="column.input.isShowInput">
+        <div class="icons-wrapper" (click)="toggleShowOrHidden(column.name)">
+          <i class="material-icons icon-close">close</i>
+        </div>
+
+        <input
+          type="text"
+          placeholder="{{ column.input.placeholder }}"
+          [(ngModel)]="column.input.value"
+          (keydown.enter)="add(column.input.value, column.name)"
+          autofocus
+        />
+      </div>
+      <div class="todo-form" *ngIf="column.input.isShowIcon">
+        <div class="icons-wrapper" (click)="toggleShowOrHidden(column.name)">
+          <i class="material-icons icon-add">add</i>
+        </div>
+      </div>
+    </div>
+    <div class="board-column">
+      <div class="column-title">Done</div>
+      <div
+        class="tasks-container"
+        cdkDropList
+        [cdkDropListData]="done"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div class="task" *ngFor="let item of done" cdkDrag>
+          <div class="icon-container-check">
+            <i class="material-icons icon-check">check</i>
+          </div>
+          <textarea class="title" disabled>{{ item?.title }}</textarea>
+
+          <div class="icon-container">
+            <i class="material-icons icon-edit">edit</i>
+            <i
+              class="material-icons icon-delete"
+              (click)="deleteTaskDone(item.id)"
+              >delete</i
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
